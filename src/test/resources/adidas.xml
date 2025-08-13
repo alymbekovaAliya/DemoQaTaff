@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="/Users/aliyaalymbekova/Desktop/DemoQATaf">
+        <classes>
+            <class name="demoqa.adidas.RegisterUserTest">
+                <methods>
+                    <include name="registerUserTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

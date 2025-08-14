@@ -1,7 +1,9 @@
 package com.demoqa.pages.adidas;
 
 import com.demoqa.drivers.DriverManager;
+import com.demoqa.enums.Title;
 import com.demoqa.pages.BasePage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -62,11 +64,13 @@ public class SignUpPage extends BasePage {
     @FindBy(xpath = "//button[@data-qa='create-account']")
     public WebElement createAccountButton;
 
-    public SignUpPage selectCounty(String country) {
-        actions.selectByText(countrySelect, country);
+    @Step("Enter new password {0}")
+    public SignUpPage enterNewPassword(String inputPassword) {
+        actions.type(password, inputPassword);
         return this;
     }
 
+    @Step("select date of birth {0}")
     public SignUpPage selectDateMonthYearCalendar(String dateMonthYear) {
 
         String[] dateMonthYearParts = dateMonthYear.split(" ");
@@ -81,9 +85,89 @@ public class SignUpPage extends BasePage {
         return this;
     }
 
-    public SignUpPage titleFill(String gender) {
-       WebElement element = DriverManager.getDriver().findElement(By.xpath("//input[@value='"+ gender +"']"));
-       actions.click(element);
-       return this;
+    @Step("click checkbox newsletter")
+    public SignUpPage clickCheckboxNewsletter() {
+        actions.click(checkboxNewsletter);
+        return this;
     }
+
+    @Step("click checkbox option")
+    public SignUpPage clickCheckboxOption() {
+        actions.click(checkboxOption);
+        return this;
+    }
+
+    @Step("select gender {0}")
+    public SignUpPage titleFill(Title title) {
+        WebElement element = DriverManager.getDriver().findElement(By.xpath("//input[@value='" + title.getTitle() + "']"));
+        actions.click(element);
+        return this;
+    }
+
+    @Step("fill first name {0}")
+    public SignUpPage fillFirstName(String firstName) {
+        actions.type(firstNameInput, firstName);
+        return this;
+    }
+
+    @Step("fill last name {0}")
+    public SignUpPage fillLastName(String lastName) {
+        actions.type(lastNameInput, lastName);
+        return this;
+    }
+
+    @Step("enter company name {0}")
+    public SignUpPage enterCompanyName(String name) {
+        actions.type(companyInput, name);
+        return this;
+    }
+
+    @Step("fill address one")
+    public SignUpPage fillAddress(String address) {
+        actions.type(address1Input, address);
+        return this;
+    }
+
+    @Step("fill address two")
+    public SignUpPage fillAddress2(String address) {
+        actions.type(address2Input, address);
+        return this;
+    }
+
+    @Step("select country")
+    public SignUpPage selectCounty(String country) {
+        actions.selectByText(countrySelect, country);
+        return this;
+    }
+
+    @Step("fill state {0}")
+    public SignUpPage fillState(String inputState) {
+        actions.type(state, inputState);
+        return this;
+    }
+
+    @Step("fill zip code {0}")
+    public SignUpPage fillZipCode(String inputZipCode) {
+        actions.type(zipcode, inputZipCode);
+        return this;
+    }
+
+    @Step("fill mobile number")
+    public SignUpPage fillMobileNumber(String inputMobile) {
+        actions.type(mobile_number, inputMobile);
+        return this;
+    }
+
+    @Step("fill city")
+    public SignUpPage fillCity(String inoutCity) {
+        actions.type(city, inoutCity);
+        return this;
+    }
+
+    @Step("click account created")
+    public AccountCreatedPage clickCreateAccount() {
+        actions.click(createAccountButton);
+        return new AccountCreatedPage();
+    }
+
 }

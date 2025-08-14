@@ -9,6 +9,7 @@ import com.demoqa.pages.elements.*;
 import com.demoqa.pages.elements.browserWindow.BrowserWindows;
 import com.demoqa.pages.elements.widgets.SelectMenuPage;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -32,7 +33,7 @@ public class BaseTest {
     public SignUpPage signUpPage;
     public LoginPage loginPage;
     public AccountCreatedPage accountCreatedPage;
-    public DeleteAccount deleteAccount;
+    public DeleteAccountPage deleteAccount;
 
     @BeforeClass(alwaysRun = true)
     public void setupBrowser() {
@@ -54,7 +55,12 @@ public class BaseTest {
         signUpPage = new SignUpPage();
         loginPage = new LoginPage();
         accountCreatedPage = new AccountCreatedPage();
-        deleteAccount = new DeleteAccount();
+        deleteAccount = new DeleteAccountPage();
+    }
+
+    public <T> T open(Class<T> pageClass) {
+        driver.get("https://automationexercise.com/");
+        return PageFactory.initElements(driver, pageClass);
     }
 
     @AfterClass(alwaysRun = true)

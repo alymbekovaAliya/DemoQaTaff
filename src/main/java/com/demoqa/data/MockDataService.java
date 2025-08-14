@@ -55,4 +55,8 @@ public class MockDataService {
         return String.valueOf(faker.internet().password());
     }
 
+    public String generateRandomCountry() {
+        return String.valueOf(faker.address().country());
+    }
+
 }

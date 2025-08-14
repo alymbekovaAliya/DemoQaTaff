@@ -1,63 +1,84 @@
 package demoqa.adidas;
 
+import com.demoqa.enums.Title;
+import com.demoqa.pages.adidas.HomePage;
 import demoqa.BaseTest;
-import org.openqa.selenium.WebElement;
-import org.testng.Assert;
+import io.qameta.allure.Description;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
+import static io.qameta.allure.Allure.step;
 
 public class RegisterUserTest extends BaseTest {
 
     @Test
+    @Description("Register user")
+    @Owner("Aliia")
+    @Severity(SeverityLevel.BLOCKER)
     public void registerUserTest() {
-        browserManager.open("https://automationexercise.com/");
 
-        Assert.assertTrue(homePage.homeOrange.isDisplayed());
+        var loginPage = open(HomePage.class).verifyPageIsLoaded().clickSignUp();
 
-        webElementActions.click(homePage.signUp);
+        SoftAssert softAssert = new SoftAssert();
+        step("Проверка присутствия текста New User Signup!", () -> {
+                    softAssert.assertEquals(loginPage.signUpHeaderIsVisible.getText(), "New User Signup!");
+                }
+        );
 
-        Assert.assertTrue(loginPage.signUpHeaderIsVisible.isDisplayed());
+        var firstName = dataService.generateRandomFirstName();
+        var signupPage = loginPage.fillName(firstName)
+                .fillEmail(dataService.generateRandomEmail())
+                .clickSignupBtn();
 
-        webElementActions.type(loginPage.signUpName, dataService.generateRandomFirstName())
-                .type(loginPage.signUpEmail, dataService.generateRandomEmail())
-                .click(loginPage.signUpButton);
+        step("Проверка присутствия текста Enter Account Information", () -> {
+                    softAssert.assertEquals(webElementActions.getText(signupPage.enterAccountInformationHeader), "ENTER ACCOUNT INFORMATION", "значения не совпадают!");
+                }
+        );
 
-        Assert.assertTrue(signUpPage.enterAccountInformationHeader.isDisplayed());
 
-        signUpPage.titleFill("Mr");
-        webElementActions.type(signUpPage.password, dataService.generateRandomPassword());
-        signUpPage.selectDateMonthYearCalendar("25 January 2000");
 
-        webElementActions.click(signUpPage.checkboxNewsletter)
-                .click(signUpPage.checkboxOption);
+        var accountCreatedPage = signupPage.titleFill(Title.MR)
+                .enterNewPassword(dataService.generateRandomPassword())
+                .selectDateMonthYearCalendar("19 March 1996")
+                .clickCheckboxNewsletter()
+                .clickCheckboxOption()
+                .fillFirstName(firstName)
+                .fillLastName(dataService.generateRandomLastName())
+                .enterCompanyName(dataService.generateRandomCompany())
+                .fillAddress(dataService.generateRandomAddress())
+                .fillAddress2(dataService.generateRandomAddress())
+                .selectCounty("India")
+                .fillState(dataService.generateRandomState())
+                .fillCity(dataService.generateRandomCity())
+                .fillZipCode(dataService.generateRandomZipcode())
+                .fillMobileNumber(dataService.generateRandomNumber())
+                .clickCreateAccount();
 
-        webElementActions.scrollToElement(signUpPage.firstNameInput);
+        step("Проверка присутствия текста ACCOUNT CREATED!", () -> {
+                    softAssert.assertEquals(webElementActions.getText(accountCreatedPage.accountCreatedIsVisible), "ACCOUNT CREATED!", "значения не совпадают!");
+                }
+        );
 
-        webElementActions.type(signUpPage.firstNameInput, dataService.generateRandomFirstName())
-                .type(signUpPage.lastNameInput, dataService.generateRandomLastName())
-                .type(signUpPage.companyInput, dataService.generateRandomCompany())
-                .type(signUpPage.address1Input, dataService.generateRandomAddress())
-                .type(signUpPage.address2Input, dataService.generateRandomAddress());
+        var homePage = accountCreatedPage.clickContinueBtn();
 
-        signUpPage.selectCounty("India");
+        step("Проверка присутствия текста Logged in as username", () -> {
+                    softAssert.assertEquals(webElementActions.getText(homePage.loggedInAsUsernameIsVisible), "Logged in as " + firstName, "значения не совпадают!");
+                }
+        );
 
-        webElementActions.type(signUpPage.state, dataService.generateRandomState())
-                .type(signUpPage.city, dataService.generateRandomCity())
-                .type(signUpPage.zipcode, dataService.generateRandomZipcode())
-                .type(signUpPage.mobile_number, dataService.generateRandomNumber())
-                .click(signUpPage.createAccountButton);
+        var deleteAccountPage = homePage.clickDeleteAccBtn();
 
-        Assert.assertTrue(accountCreatedPage.accountCreatedIsVisible.isDisplayed());
+        step("Проверка присутствия текста ACCOUNT DELETED!", () -> {
+                    softAssert.assertEquals(webElementActions.getText(deleteAccountPage.accountDeletedIsVisible), "ACCOUNT DELETED!", "значения не совпадают!");
+                }
+        );
 
-        webElementActions.click(accountCreatedPage.continueButton);
+        deleteAccountPage.clickContinueBtn().verifyPageIsLoaded();
 
-        Assert.assertTrue(homePage.loggedInAsUsernameIsVisible.isDisplayed());
-
-        webElementActions.click(homePage.deleteAccountButton);
-
-        Assert.assertTrue(deleteAccount.accountDeletedIsVisible.isDisplayed());
-
-        webElementActions.click(deleteAccount.continueButton);
-
+        softAssert.assertAll();
     }
 
 }

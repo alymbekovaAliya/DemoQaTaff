@@ -99,4 +99,9 @@ public class WebElementActions {
         js.executeScript("arguments[0].setAttribute('style', 'border: 2px solid red; background: yellow;');", element);
         return this;
     }
+
+    public String getText(WebElement element){
+        waitElementToBeDisplayed(element);
+        return element.getText();
+    }
 }

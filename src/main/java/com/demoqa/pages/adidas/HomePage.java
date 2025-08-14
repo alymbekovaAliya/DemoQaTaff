@@ -1,7 +1,10 @@
 package com.demoqa.pages.adidas;
+
 import com.demoqa.pages.BasePage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.testng.Assert;
 
 public class HomePage extends BasePage {
 
@@ -17,7 +20,21 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href ='/delete_account']")
     public WebElement deleteAccountButton;
 
-//    public boolean verifyHomePageIsDisplayed() {
-//       return homeOrange.getAttribute("style").equals("orange");
-//    }
+    @Step("click sign up btn")
+    public LoginPage clickSignUp() {
+        actions.click(signUp);
+        return new LoginPage();
+    }
+
+    @Step("verify home page is displayed")
+    public HomePage verifyPageIsLoaded() {
+        Assert.assertEquals(homeOrange.getAttribute("style"), "color: orange;");
+        return this;
+    }
+
+    @Step("click delete account btn")
+    public DeleteAccountPage clickDeleteAccBtn(){
+        actions.click(deleteAccountButton);
+        return new DeleteAccountPage();
+    }
 }

@@ -35,6 +35,12 @@ public class LoginPage extends BasePage {
     @FindBy(xpath = "//p[text()='Your email or password is incorrect!']")
     public WebElement warningIncorrectParams;
 
+    @FindBy(xpath = "//a[normalize-space(text())='Home']")
+    public WebElement homePage;
+
+    @FindBy(xpath = "//p[normalize-space(text())='Email Address already exist!']")
+    public WebElement warningEmailAlreadyExist;
+
     @Step("fill user name {0}")
     public LoginPage fillName(String username) {
         actions.type(signUpName, username);
@@ -52,4 +58,19 @@ public class LoginPage extends BasePage {
         actions.click(signUpButton);
         return new SignUpPage();
     }
+
+    @Step("login")
+    public HomePage login(String userEmail, String userPassword) {
+        actions.type(loginEmailInput, userEmail)
+                .type(loginPasswordInput, userPassword)
+                .click(loginButton);
+        return new HomePage();
+    }
+
+    public HomePage switchToHomePage() {
+        actions.click(homePage);
+        return new HomePage();
+    }
+
+
 }

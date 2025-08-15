@@ -20,7 +20,7 @@ public class RegisterUserTest extends BaseTest {
     @Severity(SeverityLevel.BLOCKER)
     public void registerUserTest() {
 
-        var loginPage = open(HomePage.class).verifyPageIsLoaded().clickSignUp();
+        var loginPage = open(HomePage.class).verifyPageIsLoaded().clickSignUpLogin();
 
         SoftAssert softAssert = new SoftAssert();
         step("Проверка присутствия текста New User Signup!", () -> {

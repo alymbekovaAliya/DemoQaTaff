@@ -20,8 +20,14 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href ='/delete_account']")
     public WebElement deleteAccountButton;
 
+    @FindBy(xpath = "//i[@class='fa fa-lock']")
+    public WebElement logout;
+
+    @FindBy(xpath = "//a[normalize-space(text())='Contact us']")
+    public WebElement contactUsBtn;
+
     @Step("click sign up btn")
-    public LoginPage clickSignUp() {
+    public LoginPage clickSignUpLogin() {
         actions.click(signUp);
         return new LoginPage();
     }
@@ -37,4 +43,18 @@ public class HomePage extends BasePage {
         actions.click(deleteAccountButton);
         return new DeleteAccountPage();
     }
+
+    @Step("click logout")
+    public LoginPage clickLogOutBtn() {
+        actions.click(logout);
+        return new LoginPage();
+    }
+
+    @Step("click contact us")
+    public ContactUpPage clickContactUs() {
+        actions.click(contactUsBtn);
+        return  new ContactUpPage();
+    }
 }
+
+
